@@ -38,4 +38,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         this.mImageLoader = null;
         this.mApplication = null;
     }
+
+    //
 }

@@ -27,6 +27,7 @@ import com.jess.arms.http.RequestInterceptor;
 import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.utils.ArmsUtils;
 import com.nettech.armsproject.BuildConfig;
+import com.nettech.armsproject.http_services.Api;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;

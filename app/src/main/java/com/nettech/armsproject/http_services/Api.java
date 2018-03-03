@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.nettech.armsproject.config;
+package com.nettech.armsproject.http_services;
+
+import io.reactivex.Observable;
+import retrofit2.http.HEAD;
+import retrofit2.http.Headers;
 
 /**
  * ================================================
@@ -25,6 +29,5 @@ package com.nettech.armsproject.config;
  * ================================================
  */
 public interface Api {
-    String APP_DOMAIN = "https://api.github.com";
-    String RequestSuccess = "0";
+    String APP_DOMAIN = "http://api.qlqwp2p.com";
 }
