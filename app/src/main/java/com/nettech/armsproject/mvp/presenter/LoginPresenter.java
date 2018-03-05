@@ -68,10 +68,9 @@ public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginCon
         if (mRootView.phoneError(phone)) {
             mModel.sendMCode(phone)
                     .subscribeOn(Schedulers.io())
-                    .doOnSubscribe(disposable -> {
-                        mRootView.showLoading();
-                    })
+                    .doOnSubscribe(disposable -> mRootView.showLoading())
                     .observeOn(AndroidSchedulers.mainThread())
+
                     .doFinally(() -> mRootView.hideLoading())
                     .subscribe(new DefaultHandleSubscriber<Result<User>>(mErrorHandler) {
                         @Override
