@@ -12,4 +12,14 @@ public class Result<T> {
         public int android_type;
         public int ios_type;
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                ", update=" + update +
+                '}';
+    }
 }

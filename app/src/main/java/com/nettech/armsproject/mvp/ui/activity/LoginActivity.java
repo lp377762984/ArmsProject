@@ -1,6 +1,7 @@
 package com.nettech.armsproject.mvp.ui.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import com.nettech.armsproject.bean.Result;
+import com.nettech.armsproject.bean.User;
 import com.nettech.armsproject.di.component.DaggerLoginComponent;
 import com.nettech.armsproject.di.module.LoginModule;
 import com.nettech.armsproject.mvp.contract.LoginContract;
@@ -52,6 +54,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     TextView tvSend;
     @Inject
     LoginPresenter mPresenter;
+    private ProgressDialog progress;
+
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
         DaggerLoginComponent //如找不到该类,请编译一下项目
@@ -74,12 +78,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void showLoading() {
-
+        if (progress == null)
+            progress = new ProgressDialog(this);
+        else
+            progress.show();
     }
 
     @Override
     public void hideLoading() {
-
+        if (progress != null && progress.isShowing()) progress.dismiss();
     }
 
     @Override
@@ -105,8 +112,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public void sendCode(Result<String> results) {
-        ArmsUtils.makeText(this,results.data);
+    public void sendCode(Result<User> results) {
+        ArmsUtils.makeText(this, results.toString());
     }
 
     @Override
@@ -115,16 +122,16 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             if (RegexUtils.isMobilePhoneNum(msg)) {
                 return true;
             } else {
-                ArmsUtils.makeText(this,"输入不符合规范，请重新输入");
+                ArmsUtils.makeText(this, "输入不符合规范，请重新输入");
             }
         } else {
-            ArmsUtils.makeText(this,"请输入11位手机号码");
+            ArmsUtils.makeText(this, "请输入11位手机号码");
         }
         return false;
     }
 
     @OnClick(R.id.login_time_tv)
-    public void sendCode(View view){
+    public void sendCode(View view) {
         mPresenter.sendCode(etPhone.getText().toString());
     }
 }

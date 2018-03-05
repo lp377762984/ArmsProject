@@ -11,6 +11,7 @@ import com.jess.arms.di.scope.ActivityScope;
 import javax.inject.Inject;
 
 import com.nettech.armsproject.bean.Result;
+import com.nettech.armsproject.bean.User;
 import com.nettech.armsproject.http_services.HttpServices;
 import com.nettech.armsproject.mvp.contract.LoginContract;
 
@@ -40,7 +41,7 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
     }
 
     @Override
-    public Observable<Result<String>> sendMCode(String phone) {
+    public Observable<Result<User>> sendMCode(String phone) {
         return mRepositoryManager
                 .obtainRetrofitService(HttpServices.class)
                 .sendCode(phone);
