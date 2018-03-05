@@ -27,12 +27,20 @@ import com.nettech.armsproject.R;
 import com.nettech.armsproject.uitls.RegexUtils;
 
 
-import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -55,6 +63,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Inject
     LoginPresenter mPresenter;
     private ProgressDialog progress;
+    private static int CODE_TIME = 10;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -78,12 +87,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void showLoading() {
-        if (progress == null){
+        if (progress == null) {
             progress = new ProgressDialog(this);
             progress.setCanceledOnTouchOutside(false);
             progress.setCancelable(false);
         }
-        else
         progress.show();
     }
 
@@ -116,7 +124,41 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void sendCode(Result<User> results) {
-        ArmsUtils.makeText(this, results.toString());
+        ArmsUtils.makeText(this, results.msg);
+        etCode.requestFocus();
+        etCode.setFocusable(true);
+        Observable.interval(0, 1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .take(CODE_TIME, TimeUnit.SECONDS)
+                .doOnSubscribe(disposable -> {
+                    tvSend.setEnabled(false);
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(aLong -> CODE_TIME - aLong)
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        tvSend.setText(aLong+"s后重新发送");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        tvSend.setEnabled(true);
+                        tvSend.setText("获取验证码");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        tvSend.setEnabled(true);
+                        tvSend.setText("获取验证码");
+                    }
+                });
     }
 
     @Override
@@ -125,10 +167,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             if (RegexUtils.isMobilePhoneNum(msg)) {
                 return true;
             } else {
-                ArmsUtils.makeText(this, "输入不符合规范，请重新输入");
+                ArmsUtils.makeText(this.getApplicationContext(), "输入不符合规范，请重新输入");
             }
         } else {
-            ArmsUtils.makeText(this, "请输入11位手机号码");
+            ArmsUtils.makeText(this.getApplicationContext(), "请输入11位手机号码");
         }
         return false;
     }
