@@ -51,7 +51,6 @@ import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
  * ================================================
  */
 public final class GlobalConfiguration implements ConfigModule {
-//    public static String sDomain = Api.APP_DOMAIN;
 
     @Override
     public void applyOptions(Context context, GlobalConfigModule.Builder builder) {

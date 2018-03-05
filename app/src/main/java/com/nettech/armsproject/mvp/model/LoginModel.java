@@ -10,7 +10,14 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import com.nettech.armsproject.bean.Result;
+import com.nettech.armsproject.http_services.HttpServices;
 import com.nettech.armsproject.mvp.contract.LoginContract;
+
+import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 
 @ActivityScope
@@ -30,5 +37,12 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<Result<String>> sendMCode(String phone) {
+        return mRepositoryManager
+                .obtainRetrofitService(HttpServices.class)
+                .sendCode(phone);
     }
 }

@@ -15,9 +15,6 @@
  */
 package com.nettech.armsproject.http_services;
 
-import io.reactivex.Observable;
-import retrofit2.http.HEAD;
-import retrofit2.http.Headers;
 
 /**
  * ================================================
@@ -29,5 +26,5 @@ import retrofit2.http.Headers;
  * ================================================
  */
 public interface Api {
-    String APP_DOMAIN = "http://api.qlqwp2p.com";
+    String APP_DOMAIN = "http://apidebug.qlqwp2p.com";
 }

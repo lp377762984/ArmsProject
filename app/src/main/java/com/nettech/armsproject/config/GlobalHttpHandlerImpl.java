@@ -18,6 +18,8 @@ package com.nettech.armsproject.config;
 import android.content.Context;
 
 import com.jess.arms.http.GlobalHttpHandler;
+import com.nettech.armsproject.uitls.EncodeUtils;
+import com.nettech.armsproject.uitls.PackageUtils;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -67,6 +69,19 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
                     /* 如果需要再请求服务器之前做一些操作,则重新返回一个做过操作的的request如增加header,不做操作则直接返回request参数
                        return chain.request().newBuilder().header("token", tokenId)
                               .build(); */
-        return request;
+        String nonceStr = EncodeUtils.makeNonceStr();
+        String url = request.url().toString();
+        String[] strs = EncodeUtils.makeSignHead(nonceStr, url);
+        return chain.request().newBuilder()
+                .header("apiversion", PackageUtils.getPackageVersion(context))
+                .header("clientfrom", "android" + PackageUtils.getAndroidVersion())
+                .header("deviceuuid", PackageUtils.getDeviceId())
+                .header("noncestr", nonceStr)
+                .header("sign",strs[1])
+                .header("timestamp", strs[0])
+                /*.header("sessionId", AppConfig.getInstance().getString("session_id", null))
+                .header("accessToken", AppConfig.getInstance().getString("access_token", null))
+                .header("network", AppConfig.getInstance().getString("network",null))*/
+                .build();
     }
 }
