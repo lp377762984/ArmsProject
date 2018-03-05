@@ -40,7 +40,7 @@ import java.io.IOException;
 
 
 @ActivityScope
-public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginContract.View,User> {
+public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginContract.View, User> {
     @Inject
     RxErrorHandler mErrorHandler;
     @Inject
@@ -69,8 +69,8 @@ public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginCon
             mModel.sendMCode(phone)
                     .subscribeOn(Schedulers.io())
                     .doOnSubscribe(disposable -> mRootView.showLoading())
+                    .subscribeOn(AndroidSchedulers.mainThread())//
                     .observeOn(AndroidSchedulers.mainThread())
-
                     .doFinally(() -> mRootView.hideLoading())
                     .subscribe(new DefaultHandleSubscriber<Result<User>>(mErrorHandler) {
                         @Override
@@ -82,7 +82,7 @@ public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginCon
     }
 
     @Override
-    public void handle200(int what,Result<User> result) {
+    public void handle200(int what, Result<User> result) {
         mRootView.sendCode(result);
     }
 }

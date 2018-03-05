@@ -78,10 +78,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void showLoading() {
-        if (progress == null)
+        if (progress == null){
             progress = new ProgressDialog(this);
+            progress.setCanceledOnTouchOutside(false);
+            progress.setCancelable(false);
+        }
         else
-            progress.show();
+        progress.show();
     }
 
     @Override
