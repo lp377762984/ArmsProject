@@ -81,6 +81,6 @@ public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginCon
         if (what == 1)
             mRootView.sendCode((Result<User>) result);
         else if(what==2)
-            mRootView.loginSuccess((Result<User>) result);
+            mRootView.loginSuccess((Result<LoginEntity>) result);
     }
 }

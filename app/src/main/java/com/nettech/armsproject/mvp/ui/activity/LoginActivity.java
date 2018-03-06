@@ -21,6 +21,7 @@ import com.jess.arms.integration.lifecycle.Lifecycleable;
 import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.RxLifecycleUtils;
 import com.nettech.armsproject.R;
+import com.nettech.armsproject.bean.LoginEntity;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
 import com.nettech.armsproject.di.component.DaggerLoginComponent;
@@ -160,8 +161,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public void loginSuccess(Result<User> results) {
+    public void loginSuccess(Result<LoginEntity> results) {
         ArmsUtils.makeText(this.getApplicationContext(),results.msg);
+
     }
 
     @OnClick({R.id.login_time_tv,R.id.login_btn})
@@ -179,15 +181,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     public boolean checkError(String msg) {
-        if (msg.length() != 0) {//没输入的情况下
-            if (RegexUtils.isMobilePhoneNum(msg)) {
-                return true;
-            } else {
-                ArmsUtils.makeText(this.getApplicationContext(), "输入不符合规范，请重新输入");
-            }
-        } else {
-            ArmsUtils.makeText(this.getApplicationContext(), "请输入11位手机号码");
-        }
+        if (msg.length() != 0)
+            if (RegexUtils.isMobilePhoneNum(msg)) return true;
+             else ArmsUtils.makeText(this.getApplicationContext(), "输入不符合规范，请重新输入");
+         else ArmsUtils.makeText(this.getApplicationContext(), "请输入11位手机号码");
         return false;
     }
 
