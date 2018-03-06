@@ -38,13 +38,13 @@ public class DefaultHandleSubscriber<K> extends ErrorHandleSubscriber<K> {
             Result rt = (Result) k;
             switch (rt.code) {
                 case 10:
-                    if (handler != null) handler.handle10(what);
+                    if (handler != null) handler.handle10(what,rt);
                     break;
                 case 11:
-                    if (handler != null) handler.handle11(what);
+                    if (handler != null) handler.handle11(what, rt);
                     break;
                 case 20:
-                    if (handler != null) handler.handle20(what);
+                    if (handler != null) handler.handle20(what, rt);
                     break;
                 case 200:
                     if (handler != null) handler.handle200(what, rt);

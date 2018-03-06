@@ -3,22 +3,18 @@ package com.nettech.armsproject.mvp.model;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
-
-import com.jess.arms.di.scope.ActivityScope;
-
-import javax.inject.Inject;
-
+import com.nettech.armsproject.bean.LoginEntity;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
 import com.nettech.armsproject.http_services.HttpServices;
 import com.nettech.armsproject.mvp.contract.LoginContract;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 
 @ActivityScope
@@ -45,5 +41,12 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
         return mRepositoryManager
                 .obtainRetrofitService(HttpServices.class)
                 .sendCode(phone);
+    }
+
+    @Override
+    public Observable<Result<LoginEntity>> login(String phone, String code) {
+        return mRepositoryManager
+                .obtainRetrofitService(HttpServices.class)
+                .login(phone, code);
     }
 }

@@ -7,30 +7,29 @@ public class User {
      * expiring_in : 1800
      */
 
-    private String avatar;
-    private int expiring_in;
+    public String avatar;
+    public int expiring_in;
 
-    public String getAvatar() {
-        return avatar;
-    }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+    /**
+     * mobile : 15510115653
+     * nickname : 疯狂牛仔衬衫
+     * sex : 男
+     * age : 25
+     * location : 未设置
+     * card_status : 1
+     * company_status : 1
+     * group_name : 中级合伙人
+     * is_level_pwd : 1
+     */
 
-    public int getExpiring_in() {
-        return expiring_in;
-    }
-
-    public void setExpiring_in(int expiring_in) {
-        this.expiring_in = expiring_in;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "avatar='" + avatar + '\'' +
-                ", expiring_in=" + expiring_in +
-                '}';
-    }
+    public String mobile;
+    public String nickname;
+    public String sex;
+    public int age;
+    public String location;
+    public int card_status;
+    public int company_status;
+    public String group_name;
+    public int is_level_pwd;
 }

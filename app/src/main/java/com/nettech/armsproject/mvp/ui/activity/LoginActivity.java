@@ -1,11 +1,14 @@
 package com.nettech.armsproject.mvp.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,18 +17,18 @@ import android.widget.TextView;
 
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.integration.lifecycle.Lifecycleable;
 import com.jess.arms.utils.ArmsUtils;
-
+import com.jess.arms.utils.RxLifecycleUtils;
+import com.nettech.armsproject.R;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
 import com.nettech.armsproject.di.component.DaggerLoginComponent;
 import com.nettech.armsproject.di.module.LoginModule;
 import com.nettech.armsproject.mvp.contract.LoginContract;
 import com.nettech.armsproject.mvp.presenter.LoginPresenter;
-
-import com.nettech.armsproject.R;
+import com.nettech.armsproject.uitls.DialogUtils;
 import com.nettech.armsproject.uitls.RegexUtils;
-
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,19 +40,13 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import timber.log.Timber;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
+public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View, TextWatcher {
     @BindView(R.id.login_iv_avatar)
     ImageView userHead;
     @BindView(R.id.login_et_number)
@@ -62,8 +59,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     TextView tvSend;
     @Inject
     LoginPresenter mPresenter;
-    private ProgressDialog progress;
-    private static int CODE_TIME = 10;
+    private Dialog progress;
+    private static int CODE_TIME = 30;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -82,13 +79,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        etCode.addTextChangedListener(this);
     }
 
     @Override
     public void showLoading() {
         if (progress == null) {
-            progress = new ProgressDialog(this);
+            progress = DialogUtils.createWaitDialog(this);
             progress.setCanceledOnTouchOutside(false);
             progress.setCancelable(false);
         }
@@ -124,15 +121,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void sendCode(Result<User> results) {
-        ArmsUtils.makeText(this, results.msg);
+        ArmsUtils.makeText(this.getApplicationContext(), results.msg);
         etCode.requestFocus();
         etCode.setFocusable(true);
         Observable.interval(0, 1, TimeUnit.SECONDS)
+                .compose(RxLifecycleUtils.bindToLifecycle((Lifecycleable) this))
                 .subscribeOn(Schedulers.io())
                 .take(CODE_TIME, TimeUnit.SECONDS)
-                .doOnSubscribe(disposable -> {
-                    tvSend.setEnabled(false);
-                })
+                .doOnSubscribe(disposable -> tvSend.setEnabled(false))
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(aLong -> CODE_TIME - aLong)
@@ -142,9 +138,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
                     }
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onNext(Long aLong) {
-                        tvSend.setText(aLong+"s后重新发送");
+                        Timber.d("%s", aLong);
+                        tvSend.setText(aLong + "s后重新发送");
                     }
 
                     @Override
@@ -162,7 +160,25 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public boolean phoneError(String msg) {
+    public void loginSuccess(Result<User> results) {
+        ArmsUtils.makeText(this.getApplicationContext(),results.msg);
+    }
+
+    @OnClick({R.id.login_time_tv,R.id.login_btn})
+    public void sendCode(View view) {
+        String s = etPhone.getText().toString();
+        switch (view.getId()){
+            case R.id.login_time_tv:
+                if (checkError(s))
+                    mPresenter.sendCode(s);
+                break;
+            case R.id.login_btn:
+                mPresenter.login(s,etCode.getText().toString());
+                break;
+        }
+    }
+
+    public boolean checkError(String msg) {
         if (msg.length() != 0) {//没输入的情况下
             if (RegexUtils.isMobilePhoneNum(msg)) {
                 return true;
@@ -175,8 +191,18 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         return false;
     }
 
-    @OnClick(R.id.login_time_tv)
-    public void sendCode(View view) {
-        mPresenter.sendCode(etPhone.getText().toString());
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        loginBtn.setEnabled(s.length() > 0);
     }
 }

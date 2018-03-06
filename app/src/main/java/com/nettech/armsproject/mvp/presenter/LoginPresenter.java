@@ -1,46 +1,27 @@
 package com.nettech.armsproject.mvp.presenter;
 
 import android.app.Application;
-import android.content.Intent;
 
-import com.jess.arms.base.BaseApplication;
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
-
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-
-import javax.inject.Inject;
-
-import com.jess.arms.utils.ArmsUtils;
+import com.jess.arms.integration.AppManager;
+import com.jess.arms.utils.RxLifecycleUtils;
+import com.nettech.armsproject.bean.LoginEntity;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
 import com.nettech.armsproject.config.DefaultHandleSubscriber;
-import com.nettech.armsproject.config.MyApplication;
-import com.nettech.armsproject.http_services.HttpResponseHandler;
 import com.nettech.armsproject.mvp.BBasePresenter;
 import com.nettech.armsproject.mvp.contract.LoginContract;
-import com.nettech.armsproject.mvp.ui.activity.LoginActivity;
 
-import java.io.IOException;
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 
 @ActivityScope
-public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginContract.View, User> {
+public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginContract.View> {
     @Inject
     RxErrorHandler mErrorHandler;
     @Inject
@@ -63,26 +44,43 @@ public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginCon
         this.mImageLoader = null;
         this.mApplication = null;
     }
-
+    //发送验证码
     public void sendCode(String phone) {
-        if (mRootView.phoneError(phone)) {
-            mModel.sendMCode(phone)
-                    .subscribeOn(Schedulers.io())
-                    .doOnSubscribe(disposable -> mRootView.showLoading())
-                    .subscribeOn(AndroidSchedulers.mainThread())//
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doFinally(() -> mRootView.hideLoading())
-                    .subscribe(new DefaultHandleSubscriber<Result<User>>(mErrorHandler) {
-                        @Override
-                        public void onNext(Result<User> userResult) {
-                            super.onNext(userResult);
-                        }
-                    }.setHandler(this).setWhat(1));
-        }
+        mModel.sendMCode(phone)
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable -> mRootView.showLoading())
+                .subscribeOn(AndroidSchedulers.mainThread())//
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> mRootView.hideLoading())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new DefaultHandleSubscriber<Result<User>>(mErrorHandler) {
+                    @Override
+                    public void onNext(Result<User> userResult) {
+                        super.onNext(userResult);
+                    }
+                }.setHandler(this).setWhat(1));
     }
-
+    //登陆
+    public void login(String mobile,String code){
+        mModel.login(mobile,code)
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable -> mRootView.showLoading())
+                .subscribeOn(AndroidSchedulers.mainThread())//
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> mRootView.hideLoading())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new DefaultHandleSubscriber<Result<LoginEntity>>(mErrorHandler) {
+                    @Override
+                    public void onNext(Result<LoginEntity> userResult) {
+                        super.onNext(userResult);
+                    }
+                }.setHandler(this).setWhat(2));
+    }
     @Override
-    public void handle200(int what, Result<User> result) {
-        mRootView.sendCode(result);
+    public <T> void handle200(int what, Result<T> result) {
+        if (what == 1)
+            mRootView.sendCode((Result<User>) result);
+        else if(what==2)
+            mRootView.loginSuccess((Result<User>) result);
     }
 }

@@ -1,6 +1,7 @@
 package com.nettech.armsproject.http_services;
 
 
+import com.nettech.armsproject.bean.LoginEntity;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
 
@@ -13,4 +14,7 @@ public interface HttpServices {
     @FormUrlEncoded
     @POST("/getLoginVerify")
     Observable<Result<User>> sendCode(@Field("mobile") String phone);
+    @FormUrlEncoded
+    @POST("/login")
+    Observable<Result<LoginEntity>> login(@Field("mobile") String phone, @Field("verify") String code);
 }

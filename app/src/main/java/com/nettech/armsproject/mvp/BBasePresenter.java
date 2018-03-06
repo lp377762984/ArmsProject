@@ -12,7 +12,7 @@ import com.nettech.armsproject.http_services.HttpResponseHandler;
 import com.nettech.armsproject.mvp.ui.activity.LoginActivity;
 
 
-public class BBasePresenter<M extends IModel,V extends IView,T> extends BasePresenter<M ,V> implements HttpResponseHandler<T> {
+public class BBasePresenter<M extends IModel,V extends IView> extends BasePresenter<M ,V> implements HttpResponseHandler{
     public BBasePresenter(M model, V rootView) {
         super(model, rootView);
     }
@@ -25,27 +25,27 @@ public class BBasePresenter<M extends IModel,V extends IView,T> extends BasePres
     }
 
     @Override
-    public void handle10(int what) {
-        ArmsUtils.snackbarText("请求头参数错误");
+    public void handle10(int what,Result result) {
+        ArmsUtils.snackbarText(result.msg);
     }
 
     @Override
-    public void handle11(int what) {
-        ArmsUtils.snackbarText("sign验证失败或非法请求");
+    public void handle11(int what,Result result) {
+        ArmsUtils.snackbarText(result.msg);
     }
 
     @Override
-    public void handle20(int what) {
+    public void handle20(int what,Result result) {
         mRootView.launchActivity(new Intent(MyApplication.getInstance().getAppComponent().appManager().getCurrentActivity(), LoginActivity.class));
     }
 
     @Override
-    public void handle200(int what, Result<T> result) {
+    public <T> void handle200(int what, Result<T> result) {
 
     }
 
     @Override
-    public void handle404(int what, Result<T> result) {
+    public <T> void handle404(int what, Result<T> result) {
         ArmsUtils.snackbarText(result.msg);
     }
 }
