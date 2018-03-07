@@ -7,7 +7,7 @@ public class Result<T> {
     public String msg;
     public T data;
     @SerializedName("version_upgrade")
-    AppUpdate update;
+    public AppUpdate update;
     public static class AppUpdate{
         public int android_type;
         public int ios_type;
