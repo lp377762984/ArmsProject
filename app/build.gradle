@@ -34,7 +34,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'me.jessyan:arms:2.3.5'
+    implementation 'me.jessyan:arms:2.4.1'
     //annotationProcessor rootProject.ext.dependencies["butterknife-compiler"] //Butterknife 插件,很多人因为没加这个而报错,切记!!!
     //annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]//依赖插件, annotationProcessor 是 AndroidStudio 自带并用来替换 APT
 
@@ -58,4 +58,5 @@ dependencies {
     releaseImplementation rootProject.ext.dependencies["canary-release"]
     testImplementation rootProject.ext.dependencies["canary-release"]
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
+    implementation rootProject.ext.dependencies["adapter"]
 }

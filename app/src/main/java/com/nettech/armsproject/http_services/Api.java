@@ -26,5 +26,6 @@ package com.nettech.armsproject.http_services;
  * ================================================
  */
 public interface Api {
-    String APP_DOMAIN = "http://apidebug.qlqwp2p.com";
+    String APP_DOMAIN = "http://app.qlqwgw.com";
+    String IBB="http://app-test-api.ibbtech.cn";
 }

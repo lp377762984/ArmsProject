@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nettech.armsproject">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".config.MyApplication"
         android:allowBackup="true"
@@ -18,10 +20,11 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.nettech.armsproject.config.GlobalConfiguration"
-            android:value="ConfigModule"/>
-        <activity android:name=".MainActivity">
-        </activity>
-        <activity android:name=".mvp.ui.activity.LoginActivity"
+            android:value="ConfigModule" />
+
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".mvp.ui.activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme_NOACTIONBAR">
             <intent-filter>
@@ -30,6 +33,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".base_net.BaseNetActivity" />
+        <activity android:name=".base_net.TestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".mvp.ui.activity.TestReuseActivity"
+            android:exported="true" />
+        <activity android:name=".mvp.ui.activity.BaseListActivity"></activity>
     </application>
 
 </manifest>

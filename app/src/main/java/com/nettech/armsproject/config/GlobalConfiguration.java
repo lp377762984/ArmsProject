@@ -23,7 +23,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.jess.arms.base.delegate.AppLifecycles;
 import com.jess.arms.di.module.GlobalConfigModule;
-import com.jess.arms.http.RequestInterceptor;
+import com.jess.arms.http.log.RequestInterceptor;
 import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.utils.ArmsUtils;
 import com.nettech.armsproject.BuildConfig;
@@ -58,7 +58,7 @@ public final class GlobalConfiguration implements ConfigModule {
             builder.printHttpLogLevel(RequestInterceptor.Level.NONE);
         }
 
-        builder.baseurl(Api.APP_DOMAIN)
+        builder.baseurl(Api.IBB)
                 //强烈建议自己自定义图片加载逻辑,因为默认提供的 GlideImageLoaderStrategy 并不能满足复杂的需求
                 //请参考 https://github.com/JessYanCoding/MVPArms/wiki#3.4
 //                .imageLoaderStrategy(new CustomLoaderStrategy())
