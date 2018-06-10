@@ -2,20 +2,20 @@ package com.nettech.armsproject.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
-
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import com.jess.arms.integration.AppManager;
+import com.jess.arms.mvp.BasePresenter;
+import com.nettech.armsproject.mvp.base.BaseView;
+import com.nettech.armsproject.mvp.contract.HahaContract;
 
 import javax.inject.Inject;
 
-import com.nettech.armsproject.mvp.contract.BaseListContract;
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 
 @ActivityScope
-public class BaseListPresenter extends BasePresenter<BaseListContract.Model, BaseListContract.View> {
+public class HahaPresenter extends BasePresenter<HahaContract.Model, BaseView> {
     @Inject
     RxErrorHandler mErrorHandler;
     @Inject
@@ -26,7 +26,7 @@ public class BaseListPresenter extends BasePresenter<BaseListContract.Model, Bas
     AppManager mAppManager;
 
     @Inject
-    public BaseListPresenter(BaseListContract.Model model, BaseListContract.View rootView) {
+    public HahaPresenter(HahaContract.Model model, BaseView rootView) {
         super(model, rootView);
     }
 
@@ -37,9 +37,5 @@ public class BaseListPresenter extends BasePresenter<BaseListContract.Model, Bas
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
-    }
-
-    public void getData(){
-
     }
 }

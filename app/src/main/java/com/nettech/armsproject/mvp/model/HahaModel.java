@@ -10,18 +10,18 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
-import com.nettech.armsproject.mvp.contract.BaseListContract;
+import com.nettech.armsproject.mvp.contract.HahaContract;
 
 
 @ActivityScope
-public class BaseListModel extends BaseModel implements BaseListContract.Model {
+public class HahaModel extends BaseModel implements HahaContract.Model {
     @Inject
     Gson mGson;
     @Inject
     Application mApplication;
 
     @Inject
-    public BaseListModel(IRepositoryManager repositoryManager) {
+    public HahaModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
     }
 

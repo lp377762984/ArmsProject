@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface BaseView extends IView{
-    <T> void getData(int what,List<T> data);
+    void getData(int what,List data);
 }
