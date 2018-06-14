@@ -1,7 +1,5 @@
 package com.nettech.armsproject.mvp.base;
 
-import android.app.Activity;
-
 import com.jess.arms.mvp.IView;
 
 import java.util.List;
@@ -12,5 +10,4 @@ import java.util.List;
 
 public interface BaseView extends IView{
     void getData(int what,List data);
-    Activity getActivity();
 }

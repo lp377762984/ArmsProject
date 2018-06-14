@@ -67,6 +67,7 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
                                 });
                     }
                 });*/
+       //使用缓存有泛型问题
         return mRepositoryManager.obtainRetrofitService(HttpServices.class).login(phone,code);
     }
 }

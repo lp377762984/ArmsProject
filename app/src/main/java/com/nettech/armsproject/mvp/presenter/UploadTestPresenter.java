@@ -3,12 +3,10 @@ package com.nettech.armsproject.mvp.presenter;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
-import com.jess.arms.utils.ArmsUtils;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
 import com.nettech.armsproject.config.DefaultHandleSubscriber;
@@ -88,6 +86,11 @@ public class UploadTestPresenter extends BBasePresenter<UploadTestContract.Model
         if (what==2){
             mRootView.showMessage(result.msg);
         }
+    }
+
+    @Override
+    public void handle20(int what, Result result) {
+        super.handle20(what, result);
     }
 
     @NonNull
