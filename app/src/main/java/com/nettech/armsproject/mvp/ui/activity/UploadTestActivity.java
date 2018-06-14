@@ -168,7 +168,7 @@ public class UploadTestActivity extends BaseActivity<UploadTestPresenter> implem
             camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    configCompress();
+                    configCompress();//选择前必须调用此方法否则会崩溃
                     takePhoto.onPickFromCaptureWithCrop(imageUri, new CropOptions.Builder().create());
                 }
             });

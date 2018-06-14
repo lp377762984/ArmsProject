@@ -1,5 +1,6 @@
 package com.nettech.armsproject.mvp.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -117,5 +118,10 @@ public class BaseListActivity<P extends IPresenter> extends BaseActivity<P> impl
 
     public void pppp(){
 
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 }

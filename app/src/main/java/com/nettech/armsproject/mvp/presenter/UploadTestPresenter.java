@@ -69,7 +69,7 @@ public class UploadTestPresenter extends BBasePresenter<UploadTestContract.Model
     }
 
     public void uploadFile(TImage images) {
-        ProgressManager.getInstance().addRequestListener("http://app.qlqwgw.com/user/set", getUploadListener());
+        ProgressManager.getInstance().addRequestListener("http://app.qlqwgw.com/user/set", getUploadListener());//下载进度监听
         mModel.uploadSigleFile(images)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
