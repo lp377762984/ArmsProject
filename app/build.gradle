@@ -57,6 +57,8 @@ dependencies {
     debugImplementation rootProject.ext.dependencies["canary-debug"]
     releaseImplementation rootProject.ext.dependencies["canary-release"]
     testImplementation rootProject.ext.dependencies["canary-release"]
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     implementation rootProject.ext.dependencies["adapter"]
+    implementation 'com.github.crazycodeboy:TakePhoto:v4.1.0'
+
 }

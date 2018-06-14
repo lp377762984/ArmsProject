@@ -24,6 +24,7 @@ import com.nettech.armsproject.R;
 import com.nettech.armsproject.bean.LoginEntity;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
+import com.nettech.armsproject.config.AppConfig;
 import com.nettech.armsproject.di.component.DaggerLoginComponent;
 import com.nettech.armsproject.di.module.LoginModule;
 import com.nettech.armsproject.mvp.contract.LoginContract;
@@ -142,7 +143,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onNext(Long aLong) {
-                        Timber.d("%s", aLong);
+                        //Timber.d("%s", aLong);
                         tvSend.setText(aLong + "s后重新发送");
                     }
 
@@ -163,7 +164,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void loginSuccess(Result<LoginEntity> results) {
         ArmsUtils.makeText(this.getApplicationContext(),results.msg);
-
+        AppConfig.getInstance().putString("session_id",results.data.update_token.sessionId);
+        AppConfig.getInstance().putString("access_token",results.data.update_token.accessToken);
+        ArmsUtils.startActivity(UploadTestActivity.class);
+        finish();
     }
 
     @OnClick({R.id.login_time_tv,R.id.login_btn})

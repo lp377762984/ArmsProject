@@ -32,4 +32,21 @@ public class User {
     public int company_status;
     public String group_name;
     public int is_level_pwd;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "avatar='" + avatar + '\'' +
+                ", expiring_in=" + expiring_in +
+                ", mobile='" + mobile + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", sex='" + sex + '\'' +
+                ", age=" + age +
+                ", location='" + location + '\'' +
+                ", card_status=" + card_status +
+                ", company_status=" + company_status +
+                ", group_name='" + group_name + '\'' +
+                ", is_level_pwd=" + is_level_pwd +
+                '}';
+    }
 }

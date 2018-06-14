@@ -2,7 +2,6 @@ package com.nettech.armsproject.uitls;
 
 import android.util.Log;
 
-
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -33,7 +32,7 @@ public class EncodeUtils {
     public static String makeSign(String nonceStr, String url) {
         TreeMap map = new TreeMap();
         map.put("nonce_str", nonceStr);//3
-        map.put("timestamp", System.currentTimeMillis()/1000);//4
+        map.put("timestamp", getCurrentTime());//4
         map.put("key", "qlqw46c229d7zjf4bc3a813332aff792d32c23");//2
         map.put("api_url", url);//1
         StringBuilder sb = new StringBuilder();
@@ -54,7 +53,7 @@ public class EncodeUtils {
         String[] ss = new String[2];
         TreeMap map = new TreeMap();
         map.put("nonce_str", nonceStr);//3
-        long time = System.currentTimeMillis()/1000;
+        long time = getCurrentTime();
         map.put("timestamp", time);//4
         map.put("key", "qlqw46c229d7zjf4bc3a813332aff792d32c23");//2
         map.put("api_url", url);//1
@@ -62,9 +61,9 @@ public class EncodeUtils {
         for (Object o : map.keySet()) {
             sb.append(map.get(o));
         }
-        Log.d(TAG, "makeSign: " + sb.toString());
+        //Log.d(TAG, "makeSign: " + sb.toString());
         String secret = EncryptHelper.md5Encode(sb.toString());
-        Log.d(TAG, "makeSign: " + secret.toUpperCase());
+        //Log.d(TAG, "makeSign: " + secret.toUpperCase());
         ss[0] = time + "";
         ss[1] = secret.toUpperCase();
         return ss;
@@ -167,7 +166,7 @@ public class EncodeUtils {
     public static String getPayPsd(String psd) {
         String encryptPsd = encryptPsd(psd);
         Log.d(TAG, "origin: " + encryptPsd);
-        long time = System.currentTimeMillis();
+        long time = getCurrentTime() * 1000;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         String format = simpleDateFormat.format(time);//2015年5月8号 7点16分
         Log.d(TAG, "getPayPsd: " + format);
@@ -207,9 +206,9 @@ public class EncodeUtils {
         return md5StrBuff.toString();
     }
 
-    /*public static long getCurrentTime() {
-        long theTime = System.currentTimeMillis() / 1000 + AppConfig.getInstance().getLong("time_diff", 0);
-        Log.d(TAG, "getCurrentTime: " + theTime);
+    public static long getCurrentTime() {
+        long theTime = System.currentTimeMillis() / 1000;
+        //Log.d(TAG, "getCurrentTime: " + theTime);
         return theTime;
-    }*/
+    }
 }

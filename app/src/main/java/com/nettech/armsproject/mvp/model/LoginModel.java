@@ -52,7 +52,7 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
 
     @Override
     public Observable<Result<LoginEntity>> login(String phone, String code) {
-        return Observable.just(mRepositoryManager.obtainRetrofitService(HttpServices.class).login(phone,code))
+       /* return Observable.just(mRepositoryManager.obtainRetrofitService(HttpServices.class).login(phone,code))
                 .flatMap(new Function<Observable<Result<LoginEntity>>, ObservableSource<Result<LoginEntity>>>() {
                     @Override
                     public ObservableSource<Result<LoginEntity>> apply(Observable<Result<LoginEntity>> resultObservable) throws Exception {
@@ -66,6 +66,7 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
                                     }
                                 });
                     }
-                });
+                });*/
+        return mRepositoryManager.obtainRetrofitService(HttpServices.class).login(phone,code);
     }
 }

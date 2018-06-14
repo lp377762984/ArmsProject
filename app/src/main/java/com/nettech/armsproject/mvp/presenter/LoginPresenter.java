@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import timber.log.Timber;
 
 
 @ActivityScope
@@ -57,6 +58,12 @@ public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginCon
                     @Override
                     public void onNext(Result<User> userResult) {
                         super.onNext(userResult);
+                        Timber.d("%s", userResult.data.expiring_in);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
                     }
                 }.setHandler(this).setWhat(1));
     }
