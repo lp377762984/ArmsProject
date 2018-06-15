@@ -2,6 +2,7 @@ package com.nettech.armsproject.mvp.contract;
 
 import com.jess.arms.mvp.IView;
 import com.jess.arms.mvp.IModel;
+import com.nettech.armsproject.bean.MObservable;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
 

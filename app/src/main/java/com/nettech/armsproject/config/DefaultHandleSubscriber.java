@@ -14,6 +14,12 @@ public class DefaultHandleSubscriber<K> extends ErrorHandleSubscriber<K> {
         super(rxErrorHandler);
     }
 
+    public DefaultHandleSubscriber(RxErrorHandler rxErrorHandler, int what, HttpResponseHandler handler) {
+        super(rxErrorHandler);
+        this.what = what;
+        this.handler = handler;
+    }
+
     public int getWhat() {
         return what;
     }
@@ -38,7 +44,7 @@ public class DefaultHandleSubscriber<K> extends ErrorHandleSubscriber<K> {
             Result rt = (Result) k;
             switch (rt.code) {
                 case 10:
-                    if (handler != null) handler.handle10(what,rt);
+                    if (handler != null) handler.handle10(what, rt);
                     break;
                 case 11:
                     if (handler != null) handler.handle11(what, rt);

@@ -1,6 +1,8 @@
 package com.nettech.armsproject.bean;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     /**
      * avatar : http://apidebug.qlqwp2p.com/public/uploads/avatar/92/92.png?1503481238

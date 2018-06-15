@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
+import com.nettech.armsproject.bean.Resend;
 import com.nettech.armsproject.bean.Result;
 import com.nettech.armsproject.bean.User;
 import com.nettech.armsproject.config.DefaultHandleSubscriber;
@@ -14,6 +15,7 @@ import com.nettech.armsproject.mvp.BBasePresenter;
 import com.nettech.armsproject.mvp.contract.UploadTestContract;
 
 import org.devio.takephoto.model.TImage;
+import org.simple.eventbus.Subscriber;
 
 import java.util.List;
 
@@ -68,16 +70,7 @@ public class UploadTestPresenter extends BBasePresenter<UploadTestContract.Model
 
     public void uploadFile(TImage images) {
         ProgressManager.getInstance().addRequestListener("http://app.qlqwgw.com/user/set", getUploadListener());//下载进度监听
-        mModel.uploadSigleFile(images)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(() -> mRootView.hideLoading())
-                .subscribe(new DefaultHandleSubscriber<Result<User>>(mErrorHandler) {
-                    @Override
-                    public void onNext(Result<User> userResult) {
-                        super.onNext(userResult);
-                    }
-                }.setHandler(this).setWhat(2));
+        doRequest(buildRequest(mModel.uploadSigleFile(images)),2);
     }
 
     @Override
@@ -86,11 +79,6 @@ public class UploadTestPresenter extends BBasePresenter<UploadTestContract.Model
         if (what==2){
             mRootView.showMessage(result.msg);
         }
-    }
-
-    @Override
-    public void handle20(int what, Result result) {
-        super.handle20(what, result);
     }
 
     @NonNull

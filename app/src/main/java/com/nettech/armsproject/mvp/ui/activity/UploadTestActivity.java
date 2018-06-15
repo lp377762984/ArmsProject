@@ -33,6 +33,7 @@ import org.devio.takephoto.model.TResult;
 import org.devio.takephoto.permission.InvokeListener;
 import org.devio.takephoto.permission.PermissionManager;
 import org.devio.takephoto.permission.TakePhotoInvocationHandler;
+import org.simple.eventbus.Subscriber;
 
 import java.io.File;
 
@@ -190,5 +191,11 @@ public class UploadTestActivity extends BaseActivity<UploadTestPresenter> implem
         LubanOptions option = new LubanOptions.Builder().setMaxHeight(height).setMaxWidth(width).setMaxSize(maxSize).create();
         CompressConfig config = CompressConfig.ofLuban(option);
         takePhoto.onEnableCompress(config, false);
+    }
+
+    // TODO: 2018/6/15  参数如何缓存
+    @Subscriber
+    private void reDoRequest(int what){
+
     }
 }
