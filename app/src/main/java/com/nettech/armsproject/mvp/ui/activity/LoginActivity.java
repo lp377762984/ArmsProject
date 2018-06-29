@@ -62,7 +62,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     Button loginBtn;
     @BindView(R.id.login_time_tv)
     TextView tvSend;
-    private TextView aaa;
     @Inject
     LoginPresenter mPresenter;
     private Dialog progress;
@@ -127,7 +126,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void sendCode(Result<User> results) {
-        aaa.setText("hahha");
         ArmsUtils.makeText(this.getApplicationContext(), results.msg);
         etCode.requestFocus();
         etCode.setFocusable(true);
@@ -171,13 +169,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         ArmsUtils.makeText(this.getApplicationContext(),results.msg);
         AppConfig.getInstance().putString("session_id",results.data.update_token.sessionId);
         AppConfig.getInstance().putString("access_token",results.data.update_token.accessToken);
-        ArmsUtils.startActivity(UploadTestActivity.class);
-        Resend resend= (Resend) getIntent().getSerializableExtra("reSend");
-        if (resend!=null){
-            EventBus.getDefault().post(resend);
-        }
-        /*int what = getIntent().getIntExtra("what", -1);
-        if (what!=-1) EventBus.getDefault().post(what);*/
+        //ArmsUtils.startActivity(UploadTestActivity.class);
+        Timber.d("loginSuccess: ");
+        EventBus.getDefault().post(new Object());
         finish();
     }
 
@@ -217,4 +211,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void afterTextChanged(Editable s) {
         loginBtn.setEnabled(s.length() > 0);
     }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
+
 }

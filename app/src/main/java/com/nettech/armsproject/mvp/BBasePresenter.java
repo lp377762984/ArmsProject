@@ -3,6 +3,7 @@ package com.nettech.armsproject.mvp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 
 import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.mvp.BasePresenter;
@@ -35,7 +36,8 @@ import timber.log.Timber;
 public class BBasePresenter<M extends IModel, V extends IView> extends BasePresenter<M, V> implements HttpResponseHandler {
     @Inject
     RxErrorHandler mErrorHandler;
-    Resend resend;
+    protected Resend resend;
+    private long lastTime;
 
     public BBasePresenter(M model, V rootView) {
         super(model, rootView);
@@ -56,7 +58,7 @@ public class BBasePresenter<M extends IModel, V extends IView> extends BasePrese
         //mRootView.launchActivity(new Intent(MyApplication.getInstance().getAppComponent().appManager().getCurrentActivity(), LoginActivity.class));
         Activity topActivity = MyApplication.getInstance().getAppComponent().appManager().getTopActivity();
         Intent intent = new Intent(topActivity, LoginActivity.class);
-        intent.putExtra("reSend", resend);
+        //intent.putExtra("reSend", resend);
         topActivity.startActivity(intent);
     }
 
@@ -72,12 +74,10 @@ public class BBasePresenter<M extends IModel, V extends IView> extends BasePrese
 
     //执行网络请求
     protected <T> void doRequest(Observable<T> observable, RxErrorHandler errorHandler, int what, HttpResponseHandler handler) {
-        if (observable instanceof MObservable)
-            resend = new Resend(((MObservable<T>) observable), what);
+        resend = new Resend((observable), what);
         observable.subscribe(new DefaultHandleSubscriber<T>(errorHandler, what, handler));
     }
 
-    // TODO: 2018/6/15  如何将handler去掉
     //执行网络请求
     protected <T> void doRequest(Observable<T> observable, RxErrorHandler errorHandler, int what) {
         doRequest(observable, errorHandler, what, this);
@@ -109,8 +109,20 @@ public class BBasePresenter<M extends IModel, V extends IView> extends BasePrese
     }
 
     @Subscriber
-    private void reDoRequest(Resend resend) {
-        doRequest(resend.observable, mErrorHandler, resend.what);
+    public void reDoRequest(Object o) {
+        if (resend != null) {
+            long currentTime = System.currentTimeMillis();
+            Timber.d("reDoRequest: currentTime " + currentTime + ",lastTime " + lastTime);
+            if (currentTime - lastTime >= 1000) {
+                lastTime = currentTime;
+                //Timber.d("reDoRequest: %s", what);
+                doRequest(resend.observable, mErrorHandler, resend.what);
+            }
+        }
     }
 
+    @Subscriber(tag = "bbb")
+    public void reDoRequest2(int what) {
+        Timber.d("reDoRequest2: %s",what);
+    }
 }

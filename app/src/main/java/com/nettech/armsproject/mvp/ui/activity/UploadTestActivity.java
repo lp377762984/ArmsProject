@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.jess.arms.base.BaseActivity;
@@ -15,6 +16,7 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.DataHelper;
+import com.nettech.armsproject.OtherActivity;
 import com.nettech.armsproject.R;
 import com.nettech.armsproject.di.component.DaggerUploadTestComponent;
 import com.nettech.armsproject.di.module.UploadTestModule;
@@ -33,10 +35,13 @@ import org.devio.takephoto.model.TResult;
 import org.devio.takephoto.permission.InvokeListener;
 import org.devio.takephoto.permission.PermissionManager;
 import org.devio.takephoto.permission.TakePhotoInvocationHandler;
+import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
 import java.io.File;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -44,6 +49,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 @ActivityScope
 public class UploadTestActivity extends BaseActivity<UploadTestPresenter> implements UploadTestContract.View, TakePhoto.TakeResultListener, InvokeListener {
     private BottomSheetDialog dialog;
+
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
         DaggerUploadTestComponent //如找不到该类,请编译一下项目
@@ -67,6 +73,11 @@ public class UploadTestActivity extends BaseActivity<UploadTestPresenter> implem
     @Override
     public void showLoading() {
 
+    }
+    @OnClick(R.id.btn_post)
+    public void click(View v){
+        //EventBus.getDefault().post(22,"bbb");
+        ArmsUtils.startActivity(OtherActivity.class);
     }
 
     @Override
@@ -193,9 +204,8 @@ public class UploadTestActivity extends BaseActivity<UploadTestPresenter> implem
         takePhoto.onEnableCompress(config, false);
     }
 
-    // TODO: 2018/6/15  参数如何缓存
-    @Subscriber
-    private void reDoRequest(int what){
-
+    @Override
+    public boolean useEventBus() {
+        return false;
     }
 }

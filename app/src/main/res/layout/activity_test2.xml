@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".mvp.ui.activity.UploadTestActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <ImageView
+    android:orientation="vertical"
+    tools:context=".Test2Activity">
+    <Button
+        android:text="绑定"
+        android:id="@+id/btn_bind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
-        android:onClick="uploadFile"
-        android:text="上传图片"
+        android:text="取消绑定"
+        android:id="@+id/btn_unbind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
-        android:id="@+id/btn_post"
         android:text="发送事件"
+        android:id="@+id/btn_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

@@ -8,7 +8,7 @@ public class MyApplication extends BaseApplication {
 
     @Override
     public void onCreate() {
-        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this));
         app = this;
         super.onCreate();
 

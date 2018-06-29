@@ -3,11 +3,13 @@ package com.nettech.armsproject.bean;
 
 import java.io.Serializable;
 
+import io.reactivex.Observable;
+
 public class Resend implements Serializable {
-    public MObservable observable;
+    public Observable observable;
     public int what;
 
-    public Resend(MObservable observable, int what) {
+    public Resend(Observable observable, int what) {
         this.observable = observable;
         this.what = what;
     }

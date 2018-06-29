@@ -45,8 +45,13 @@
             android:name=".mvp.ui.activity.TestReuseActivity"
             android:exported="true" />
         <activity android:name=".mvp.ui.activity.HahaActivity" />
-        <activity android:name=".mvp.ui.activity.UploadTestActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".mvp.ui.activity.UploadTestActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Test2Activity"
+            android:exported="true" />
+        <activity android:name=".OtherActivity"></activity>
     </application>
 
 </manifest>

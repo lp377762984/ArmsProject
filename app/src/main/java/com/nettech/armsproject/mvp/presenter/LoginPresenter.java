@@ -15,6 +15,7 @@ import com.nettech.armsproject.mvp.BBasePresenter;
 import com.nettech.armsproject.mvp.contract.LoginContract;
 
 import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
 
 import javax.inject.Inject;
 
