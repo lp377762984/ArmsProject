@@ -37,7 +37,6 @@ public class BBasePresenter<M extends IModel, V extends IView> extends BasePrese
     @Inject
     RxErrorHandler mErrorHandler;
     protected Resend resend;
-    private long lastTime;
 
     public BBasePresenter(M model, V rootView) {
         super(model, rootView);
@@ -108,21 +107,16 @@ public class BBasePresenter<M extends IModel, V extends IView> extends BasePrese
         return buildRequest(observable, true);
     }
 
-    @Subscriber
-    public void reDoRequest(Object o) {
+    @Subscriber()
+    public void reDoRequest(Object o) {//子类中定义eventBus方法，会重复收到事件。暂时解决办法将loginPresenter的useEventBus return false,
         if (resend != null) {
-            long currentTime = System.currentTimeMillis();
-            Timber.d("reDoRequest: currentTime " + currentTime + ",lastTime " + lastTime);
-            if (currentTime - lastTime >= 1000) {
-                lastTime = currentTime;
-                //Timber.d("reDoRequest: %s", what);
-                doRequest(resend.observable, mErrorHandler, resend.what);
-            }
+            Timber.d("reDoRequest");
+            doRequest(resend.observable, mErrorHandler, resend.what);
         }
     }
 
     @Subscriber(tag = "bbb")
     public void reDoRequest2(int what) {
-        Timber.d("reDoRequest2: %s",what);
+        Timber.d("reDoRequest2: %s", what);
     }
 }

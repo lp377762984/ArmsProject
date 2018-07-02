@@ -51,7 +51,9 @@
         <activity
             android:name=".Test2Activity"
             android:exported="true" />
-        <activity android:name=".OtherActivity"></activity>
+        <activity android:name=".OtherActivity" />
+        <activity android:name=".mvp.ui.activity.TestEventBusActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

@@ -70,4 +70,9 @@ public class LoginPresenter extends BBasePresenter<LoginContract.Model, LoginCon
         else if (what == 2)
             mRootView.loginSuccess((Result<LoginEntity>) result);
     }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
 }

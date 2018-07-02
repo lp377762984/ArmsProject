@@ -171,7 +171,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         AppConfig.getInstance().putString("access_token",results.data.update_token.accessToken);
         //ArmsUtils.startActivity(UploadTestActivity.class);
         Timber.d("loginSuccess: ");
-        EventBus.getDefault().post(new Object());
+        EventBus.getDefault().post(new Object(),"mine");
         finish();
     }
 
@@ -210,11 +210,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void afterTextChanged(Editable s) {
         loginBtn.setEnabled(s.length() > 0);
-    }
-
-    @Override
-    public boolean useEventBus() {
-        return false;
     }
 
 }
